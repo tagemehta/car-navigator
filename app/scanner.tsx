@@ -9,5 +9,10 @@ type Props = {
 }
 
 export default function Scanner({ model, make, color}:Props) {
-  return (<View></View>);
+  return (<View>
+    <Text>Scanner</Text>
+    <Text>Make: {make}</Text>
+    <Text>Model: {model}</Text>
+    <Text>Color: {color}</Text>
+  </View>);
 }

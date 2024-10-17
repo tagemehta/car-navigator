@@ -26,22 +26,16 @@ const processCarInfo = (carInfo: string, router: any) => {
   // For example, you can make an API call to get the car details
   // and then navigate to the next screen with the car details
   // using the router.push method
-<<<<<<< HEAD
-  carInfo.split(',');
-  const router = useRouter();
-  let make = carInfo[0];
-  let model = carInfo[1];
-  let year = carInfo[2];
-=======
   carInfo.split('');
 
   let make = ""
   let model = ""
   let year = 0
->>>>>>> 418b62eceb7df09ee68d9e6e75a4a686db9e9de9
   let color = "silver"
   let licensePlate = ""
   router.push({pathname: '/scanner', params: { make, model, color, year, licensePlate } });
+  // Navigate to the scanner page
+  
 };
 const styles = StyleSheet.create({
   input: {
