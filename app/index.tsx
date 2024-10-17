@@ -13,7 +13,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Please provide the car's make, model and license plate</Text>
+      <Text>hello</Text>
       <TextInput style={styles.input} value={carInfo} onChangeText={setCarInfo} />
       <Button title="Submit" onPress={() => processCarInfo(carInfo)} />
     </View>
