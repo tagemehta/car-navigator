@@ -14,7 +14,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>hello</Text>
+      <Text>hello again</Text>
       <TextInput style={styles.input} value={carInfo} onChangeText={setCarInfo} />
       <Button title="Submit" onPress={() => processCarInfo(carInfo, router)} />
     </View>
