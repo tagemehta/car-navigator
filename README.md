@@ -1,7 +1,22 @@
 
-MIT Assistive Technology Club -- Blind Assistance App
+**MIT Assistive Technology Club -- Blind Assistance App**
 
-This app aims to provide easy-to-access, voice activated assistance for blind users, specific to ride-sharing apps like Uber and Lyft. 
+Car-Navigator is a specialized application designed to enhance the Uber experience for visually impaired users. This app works in conjunction with the official Uber app to provide real-time assistance in identifying and locating Uber vehicles.
+**Feature**s:
+1. Voice-Guided Navigation: Provides step-by-step audio instructions to help users locate their Uber vehicle1.
+2. Real-Time Vehicle Tracking: Uses GPS and proximity sensors to accurately pinpoint the location of the approaching Uber3.
+3. Driver Communication: Facilitates easy communication between the rider and driver through voice commands4.
+4. Haptic Feedback: Utilizes vibration patterns to guide users towards their vehicle3.
+5. Accessibility-First Design: Fully compatible with screen readers and other assistive technologies5.
+Installation
+
+**Usage**:
+Open the app.
+Request an Uber ride through voice command or accessible buttons.
+Once a driver accepts, the app will provide real-time updates on the vehicle's location.
+As the vehicle approaches, the app will guide you to the pickup point using voice instructions and haptic feedback.
+The app will confirm when you've reached the correct vehicle.
+
 
 
 # Welcome to your Expo app 👋
