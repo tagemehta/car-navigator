@@ -1,3 +1,5 @@
+import { View } from "react-native"
+
 type Props = {
   model: string;
   make: string;
@@ -7,5 +9,5 @@ type Props = {
 }
 
 export default function Navigator() {
-
+  return <View></View>;
 }
