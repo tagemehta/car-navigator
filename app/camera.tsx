@@ -1,7 +1,7 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
+import * as Haptics from 'expo-haptics';
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
@@ -14,10 +14,13 @@ export default function App() {
   if (!permission.granted) {
     // Camera permissions are not granted yet.
     return (
-      <View style={styles.container}>
-        <Text style={styles.message}>We need your permission to show the camera</Text>
-        <Button onPress={requestPermission} title="grant permission" />
-      </View>
+    <View style={styles.container}>
+      <Text style={styles.message}>We need your permission to show the camera</Text>
+      <Button onPress={() => {
+        requestPermission();
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+      }} title="grant permission" />
+    </View>
     );
   }
 
