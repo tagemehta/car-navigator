@@ -1,3 +1,9 @@
+
+MIT Assistive Technology Club -- Blind Assistance App
+
+This app aims to provide easy-to-access, voice activated assistance for blind users, specific to ride-sharing apps like Uber and Lyft. 
+
+
 # Welcome to your Expo app 👋
 
 This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
