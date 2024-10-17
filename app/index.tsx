@@ -8,12 +8,12 @@ export default function Index() {
   return (
     <View
       style={{
-        flex: 1,
+        flex: 2,
         justifyContent: "center",
         alignItems: "center",
       }}
     >
-      <Text>Please provide the car's make, model and license plate</Text>
+      <Text>Please provide the car's make, model and year, separated by a comma</Text>
       <TextInput style={styles.input} value={carInfo} onChangeText={setCarInfo} />
       <Button title="Submit" onPress={() => processCarInfo(carInfo)} />
     </View>
@@ -25,11 +25,11 @@ const processCarInfo = (carInfo: string) => {
   // For example, you can make an API call to get the car details
   // and then navigate to the next screen with the car details
   // using the router.push method
-  carInfo.split('');
+  carInfo.split(',');
   const router = useRouter();
-  let make = ""
-  let model = ""
-  let year = 0
+  let make = carInfo[0];
+  let model = carInfo[1];
+  let year = carInfo[2];
   let color = "silver"
   let licensePlate = ""
   router.push({pathname: '/scanner', params: { make, model, color, year, licensePlate } });
