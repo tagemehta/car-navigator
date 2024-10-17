@@ -1,8 +1,12 @@
 // Identify Subject here
+// TEAM 1 - Get access to the user's clipboard https://docs.expo.dev/versions/latest/sdk/clipboard/
+// Then use parseCarInfo to get the make, model, and color
 
 import { Text, View, TextInput, StyleSheet, Button } from "react-native";
 import { useRouter } from 'expo-router';
 import { useState } from "react";
+import parseCarInfo from "@/utilities/parseCarInfo";
+
 export default function Index() {
   const router = useRouter();
   const [carInfo, setCarInfo] = useState('');
