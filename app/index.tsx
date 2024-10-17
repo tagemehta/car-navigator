@@ -21,6 +21,7 @@ export default function Index() {
       <Text>Please provide the car's make, model and year, separated by a comma</Text>
       <TextInput style={styles.input} value={carInfo} onChangeText={setCarInfo} />
       <Button title="Submit" onPress={() => processCarInfo(carInfo, router)} />
+        <Button title="Go to Camera" onPress={() => router.push('/camera')} />
     </View>
   );
 }
@@ -30,18 +31,10 @@ const processCarInfo = (carInfo: string, router: any) => {
   // For example, you can make an API call to get the car details
   // and then navigate to the next screen with the car details
   // using the router.push method
-<<<<<<< HEAD
-  carInfo.split('');
-
-  let make = ""
-  let model = ""
-  let year = 0
-=======
   carInfo.split(',');
   let make = carInfo[0];
   let model = carInfo[1];
   let year = carInfo[2];
->>>>>>> 4e76460671be3baa5fa7396b7aef88799b014112
   let color = "silver"
   let licensePlate = ""
   router.push({pathname: '/scanner', params: { make, model, color, year, licensePlate } });
