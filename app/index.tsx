@@ -1,8 +1,12 @@
 // Identify Subject here
+// TEAM 1 - Get access to the user's clipboard https://docs.expo.dev/versions/latest/sdk/clipboard/
+// Then use parseCarInfo to get the make, model, and color
 
 import { Text, View, TextInput, StyleSheet, Button } from "react-native";
 import { useRouter } from 'expo-router';
 import { useState } from "react";
+import parseCarInfo from "@/utilities/parseCarInfo";
+
 export default function Index() {
   const router = useRouter();
   const [carInfo, setCarInfo] = useState('');
@@ -26,11 +30,18 @@ const processCarInfo = (carInfo: string, router: any) => {
   // For example, you can make an API call to get the car details
   // and then navigate to the next screen with the car details
   // using the router.push method
+<<<<<<< HEAD
   carInfo.split('');
 
   let make = ""
   let model = ""
   let year = 0
+=======
+  carInfo.split(',');
+  let make = carInfo[0];
+  let model = carInfo[1];
+  let year = carInfo[2];
+>>>>>>> 4e76460671be3baa5fa7396b7aef88799b014112
   let color = "silver"
   let licensePlate = ""
   router.push({pathname: '/scanner', params: { make, model, color, year, licensePlate } });

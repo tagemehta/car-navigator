@@ -1,6 +1,9 @@
 // This is where we will continously check for the car using the model and camera
+// TEAM 2 - Get access to the user's camera
+// Figure out how to take pictures. Call identifyCar with the image
 
 import { Text, View } from "react-native";
+import identifyCarFromImg from "@/utilities/identifyCar";
 
 type Props = {
     model: string;
