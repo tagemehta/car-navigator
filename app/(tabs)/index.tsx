@@ -36,7 +36,7 @@ const processCarInfo = (carInfo: string, router: any) => {
   let year = carInfo[2];
   let color = "silver"
   let licensePlate = ""
-  router.push({pathname: '/scanner', params: { make, model, color, year, licensePlate } });
+  router.push({pathname: '/scanner', params: { make, model, color} });
 };
 const styles = StyleSheet.create({
   input: {

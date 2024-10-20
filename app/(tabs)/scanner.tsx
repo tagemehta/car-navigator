@@ -3,6 +3,7 @@
 // Figure out how to take pictures. Call identifyCar with the image
 
 import { Text, View } from "react-native";
+import { useLocalSearchParams } from "expo-router";
 import identifyCarFromImg from "@/utilities/identifyCar";
 
 type Props = {
@@ -11,6 +12,12 @@ type Props = {
     color: string;
 }
 
-export default function Scanner({ model, make, color}:Props) {
-  return (<View></View>);
+export default function Scanner() {
+  const { model, make, color } = useLocalSearchParams<Props>();
+  return (<View>
+    <Text>Scanner</Text>
+    <Text>Model: {model}</Text>
+    <Text>Make: {make}</Text>
+    <Text>Color: {color}</Text>
+  </View>);
 }
