@@ -37,9 +37,13 @@ const processCarInfo = (carInfo: string, router: any) => {
   let year = carInfo[2];
   let color = "silver"
   let licensePlate = ""
+<<<<<<< HEAD:app/index.tsx
   router.push({pathname: '/scanner', params: { make, model, color, year, licensePlate } });
   // Navigate to the scanner page
   
+=======
+  router.push({pathname: '/scanner', params: { make, model, color} });
+>>>>>>> c2a76cf81346c61eb5643e2c97f72b7648dc4d0e:app/(tabs)/index.tsx
 };
 const styles = StyleSheet.create({
   input: {

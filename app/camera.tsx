@@ -1,4 +1,4 @@
-import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
+import { CameraView, CameraType, useCameraPermissions, } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
@@ -27,6 +27,11 @@ export default function App() {
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
+  function takePicture() {
+    // Take a picture
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
+    takePictureAsync();
+  }
 
   return (
     <View style={styles.container}>
@@ -34,6 +39,9 @@ export default function App() {
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>Flip Camera</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={takePicture}>
+            <Text style={styles.text}>Take Image</Text>
           </TouchableOpacity>
         </View>
       </CameraView>
