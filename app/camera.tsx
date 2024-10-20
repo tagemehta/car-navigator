@@ -27,10 +27,9 @@ export default function App() {
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
-  function takePicture() {
-    // Take a picture
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light)
-    takePictureAsync();
+  function takePicture(){
+    // TEAM 2 - Get access to the user's camera
+    // Figure out how to take pictures. Call identifyCar with
   }
 
   return (
