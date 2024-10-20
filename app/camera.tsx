@@ -2,10 +2,12 @@ import { CameraView, CameraType, useCameraPermissions, } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import * as Haptics from 'expo-haptics';
+import { useRouter } from 'expo-router';
+
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-
+  const router = useRouter();
   if (!permission) {
     // Camera permissions are still loading.
     return <View />;
@@ -28,8 +30,8 @@ export default function App() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
   function takePicture(){
-    // TEAM 2 - Get access to the user's camera
-    // Figure out how to take pictures. Call identifyCar with
+    
+    // Camera.takePictureAsync({ onPictureSaved: identifyCarFromImg });
   }
 
   return (
@@ -42,6 +44,11 @@ export default function App() {
           <TouchableOpacity style={styles.button} onPress={takePicture}>
             <Text style={styles.text}>Take Image</Text>
           </TouchableOpacity>
+          <View style={{ position: 'absolute', top: 10, left: 10 }}>
+            <TouchableOpacity style={styles.button} onPress={() => router.push('/(tabs)/navigator')}>
+              <Text style={styles.text}>Return</Text>
+            </TouchableOpacity>
+          </View>
         </View>
       </CameraView>
     </View>

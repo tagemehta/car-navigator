@@ -12,20 +12,12 @@ type Props = {
     color: string;
 }
 
-<<<<<<< HEAD:app/scanner.tsx
-export default function Scanner({ model, make, color}:Props) {
-  return (<View>
-    <Text>Scanner</Text>
-    <Text>Make: {make}</Text>
-    <Text>Model: {model}</Text>
-=======
 export default function Scanner() {
   const { model, make, color } = useLocalSearchParams<Props>();
   return (<View>
     <Text>Scanner</Text>
     <Text>Model: {model}</Text>
     <Text>Make: {make}</Text>
->>>>>>> c2a76cf81346c61eb5643e2c97f72b7648dc4d0e:app/(tabs)/scanner.tsx
     <Text>Color: {color}</Text>
   </View>);
 }
