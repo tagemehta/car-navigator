@@ -38,10 +38,22 @@
     },
     "plugins": [
       "expo-router",
-    
+      [
+        "react-native-vision-camera",
+        {
+          "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera.",
+          "enableMicrophonePermission": true,
+          "microphonePermissionText": "$(PRODUCT_NAME) needs access to your Microphone."
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9ce80794-8ea6-4995-820c-32d2b59e70e2"
+      }
     }
   }
 }
