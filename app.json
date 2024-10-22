@@ -41,6 +41,12 @@
         {
           "cameraPermissionText": "$(PRODUCT_NAME) needs access to your Camera."
         }
+      ],
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
+        }
       ]
     ],
     "experiments": {
@@ -50,6 +56,8 @@
       "eas": {
         "projectId": "734fea26-08e3-4718-ba0f-bf0e9097ccdb"
       }
-    }
+    },
+    "assetBundlePatterns": ["**/*"]
+
   }
 }
