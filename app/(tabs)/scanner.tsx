@@ -12,10 +12,12 @@ export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [camReady, setCamReady] = useState(false);
+  const [outputText, setOutputText] = useState('');
   const obj = useLocalSearchParams<Props>();
   const {make, model, color} = obj
   const camRef = useRef<CameraView>(null);
   const router = useRouter();
+
   if (!permission) {
     // Camera permissions are still loading.
     return <View />;
@@ -41,27 +43,34 @@ export default function App() {
       if (result?.base64) {
         let res = await identifyCarFromImg(result.base64, obj);
         if (res == 'correct') {
-          Speech.speak('Car found!');
+          setOutputText('Car found!')
           router.push({pathname: '/navigator', params: { make, model, color} });
         }
         else if (res == 'no_car') {
-          Speech.speak("No car found")
+          setOutputText('No car found')
         }
         else if (res == 'incorrect') {
-          Speech.speak('Incorrect car found!')
+          setOutputText('Incorrect car found!')
         }
-        // else console.log(res)
+        if (outputText != "") {
+          Speech.speak(outputText);
+        }
+        console.log(outputText)
       }
       else {
-        // Not ready or other problem
+        setOutputText('Looking for car!')
       }
     }
   }
 
 
+
   return (
     <View style={styles.container}>
       <CameraView ref={camRef} style={styles.camera} facing={facing} onCameraReady={() => setCamReady(true)} >
+        <View style={styles.outputContainer}>
+          <Text style={styles.outputText}>{outputText}</Text>
+        </View>
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>Flip Camera</Text>
@@ -90,10 +99,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     backgroundColor: 'transparent',
     margin: 64,
+    marginHorizontal: '5%',
   },
   button: {
     fontSize: 24,
-    marginHorizontal: 16,
+    marginHorizontal: '5%',
     borderWidth: 4,
     borderColor: 'white',
     padding: 4,
@@ -101,12 +111,21 @@ const styles = StyleSheet.create({
     flex: 1,
     alignSelf: 'flex-end',
     alignItems: 'center',
+    justifyContent: 'center',
   },
   text: {
     fontSize: 24,
     fontWeight: 'bold',
     color: 'white',
   },
+  outputText: {
+    color: 'white',
+    fontSize: 24,
+  },
+  outputContainer: {
+    alignItems: 'center',
+    marginTop: 200,
+  }
 });
 
 
