@@ -6,6 +6,7 @@ import { useState, useRef} from 'react';
 import { Button, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
 import { useLocalSearchParams, useRouter } from "expo-router";
 import identifyCarFromImg from "@/utilities/identifyCar";
+import * as Speech from 'expo-speech';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -40,8 +41,16 @@ export default function App() {
       if (result?.base64) {
         let res = await identifyCarFromImg(result.base64, obj);
         if (res == 'correct') {
+          Speech.speak('Car found!');
           router.push({pathname: '/navigator', params: { make, model, color} });
         }
+        else if (res == 'no_car') {
+          Speech.speak("No car found")
+        }
+        else if (res == 'incorrect') {
+          Speech.speak('Incorrect car found!')
+        }
+        // else console.log(res)
       }
       else {
         // Not ready or other problem

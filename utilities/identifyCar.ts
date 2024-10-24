@@ -34,7 +34,7 @@ export default async function identifyCarFromImg(data: string, obj: any):Promise
               "type": "object",
               "properties": {
                 "result": {
-                  "description": `Return correct if the car is ${obj.make} ${obj.model} and ${obj.color}, return incorrect if the car is not ${obj.make} ${obj.model} and ${obj.color}, return no_car if there is no car in the image.`,
+                  "description": `Return correct if the car is ${obj.make} ${obj.model} and ${obj.color}, return incorrect if the car is not ${obj.make} ${obj.model} and ${obj.color}, return no_car if there is no car in the image. Do not return undefined`,
                   "enum": ["correct", "incorrect", "no_car"]
                 }
               }
@@ -52,7 +52,7 @@ export default async function identifyCarFromImg(data: string, obj: any):Promise
       }
     });
     // Get the text returned by GPT and split it by spaces to get the color, make, and model
-    return response.data.choices[0].message.content
+    return JSON.parse(response.data.choices[0].message['content'])['result'] || 'error'
   } catch (e: AxiosError | any) {
     return 'error'
   }
@@ -87,6 +87,6 @@ interface GPTResponse {
 
 interface GPTChoice {
   message: {
-    content: 'no_car' | 'correct' | 'incorrect'
+    content: string;
   }
 }
