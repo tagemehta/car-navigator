@@ -2,7 +2,7 @@
 // TEAM 2 - Get access to the user's camera
 // Figure out how to take pictures. Call identifyCar with the image
 
-import { Text, View } from "react-native";
+import { Text, View, Button } from "react-native";
 import { useLocalSearchParams } from "expo-router";
 import identifyCarFromImg from "@/utilities/identifyCar";
 
@@ -19,5 +19,6 @@ export default function Scanner() {
     <Text>Model: {model}</Text>
     <Text>Make: {make}</Text>
     <Text>Color: {color}</Text>
+    <Button onPress={identifyCarFromImg} title="Identify Car"></Button>
   </View>);
 }
