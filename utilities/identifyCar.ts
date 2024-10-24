@@ -46,6 +46,7 @@ export default async function identifyCarFromImg(data: string):Promise<{ make: s
     console.log(e)
   }
   // Default return if there is an error
+  console.log("Do you have the right API key?")
   return {color: "Undef", make: "Undef", model: "Undef"}
 }
 

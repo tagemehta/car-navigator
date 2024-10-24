@@ -36,9 +36,10 @@ export default function App() {
       let result = await camRef.current.takePictureAsync({base64: true});
       if (result?.base64) {
         let res = await identifyCarFromImg(result.base64);
+        console.log("scanner: pic taken")
         console.log(res);
       }
-      else console.log("bad")
+      else console.log("error in scanner: takePic")
     }
   }
 
