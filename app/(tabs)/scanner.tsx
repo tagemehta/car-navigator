@@ -4,14 +4,17 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef} from 'react';
 import { Button, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import identifyCarFromImg from "@/utilities/identifyCar";
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [camReady, setCamReady] = useState(false);
+  const obj = useLocalSearchParams<Props>();
+  const {make, model, color} = obj
   const camRef = useRef<CameraView>(null);
+  const router = useRouter();
   if (!permission) {
     // Camera permissions are still loading.
     return <View />;
@@ -35,10 +38,14 @@ export default function App() {
     if (camReady && camRef.current) {
       let result = await camRef.current.takePictureAsync({base64: true});
       if (result?.base64) {
-        let res = await identifyCarFromImg(result.base64);
-        console.log(res);
+        let res = await identifyCarFromImg(result.base64, obj);
+        if (res == 'correct') {
+          router.push({pathname: '/navigator', params: { make, model, color} });
+        }
       }
-      else console.log("bad")
+      else {
+        // Not ready or other problem
+      }
     }
   }
 

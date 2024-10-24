@@ -1,8 +1,8 @@
 // TEAM 3 - Identify Car using chatgpt api
 
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 
-export default async function identifyCarFromImg(data: string):Promise<{ make: string; color: string; model: string; }> {
+export default async function identifyCarFromImg(data: string, obj: any):Promise<'no_car'| 'correct' | 'incorrect' | 'error'> {
   // Implementation of the function
   const apikey = process.env.EXPO_PUBLIC_gptAPI;
   // Change the data below to modify the image input (testing purposes)
@@ -26,6 +26,22 @@ export default async function identifyCarFromImg(data: string):Promise<{ make: s
             },
           ]}
         ],
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            "name": "car_information_verifier",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "result": {
+                  "description": `Return correct if the car is ${obj.make} ${obj.model} and ${obj.color}, return incorrect if the car is not ${obj.make} ${obj.model} and ${obj.color}, return no_car if there is no car in the image.`,
+                  "enum": ["correct", "incorrect", "no_car"]
+                }
+              }
+
+            }
+          }
+        },
         max_tokens: 50,
         temperature: 0.7,
       }, 
@@ -36,17 +52,12 @@ export default async function identifyCarFromImg(data: string):Promise<{ make: s
       }
     });
     // Get the text returned by GPT and split it by spaces to get the color, make, and model
-    const values = response.data.choices[0].message.content.split(" ")
-    const information = {color: values[0], make: values[1], model: values[2]}
-    // Return info to console (debug feature) and return information for other software
-    console.log(information)
-    return information
-  } catch (e) {
-    // Print any errors
-    console.log(e)
+    return response.data.choices[0].message.content
+  } catch (e: AxiosError | any) {
+    return 'error'
   }
   // Default return if there is an error
-  return {color: "Undef", make: "Undef", model: "Undef"}
+  return 'error'
 }
 
 // Structure that represents the type of data that GPT returns
@@ -63,13 +74,19 @@ interface GPTResponse {
   };
 }
 
+// interface GPTChoice {
+//   message: {
+//     content: string;
+//     refusal: string;
+//     role: string;
+//   }; // The generated text
+//   index: number; // Index of the choice
+//   logprobs?: any; // Optional: log probabilities for the tokens
+//   finish_reason: string; // Reason why the generation finished (e.g., "stop", "length")
+// }
+
 interface GPTChoice {
   message: {
-    content: string;
-    refusal: string;
-    role: string;
-  }; // The generated text
-  index: number; // Index of the choice
-  logprobs?: any; // Optional: log probabilities for the tokens
-  finish_reason: string; // Reason why the generation finished (e.g., "stop", "length")
+    content: 'no_car' | 'correct' | 'incorrect'
+  }
 }
