@@ -1,11 +1,12 @@
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState } from 'react';
 import { Button, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-
+import { useTensorflowModel } from 'react-native-fast-tflite';
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
-
+  const {model, state} = useTensorflowModel(require('@/assets/models/ssd.tflite'))
+  const actualModel = state === 'loaded' ? model : undefined
   if (!permission) {
     // Camera permissions are still loading.
     return <View />;
@@ -32,6 +33,7 @@ export default function App() {
           <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
             <Text style={styles.text}>Flip Camera</Text>
           </TouchableOpacity>
+          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}><Text>Take Picture</Text></TouchableOpacity>
         </View>
       </CameraView>
     </View>

@@ -19,6 +19,6 @@ export default function Scanner() {
     <Text>Model: {model}</Text>
     <Text>Make: {make}</Text>
     <Text>Color: {color}</Text>
-    <Button onPress={identifyCarFromImg} title="Identify Car"></Button>
+    <Button  title="Identify Car"></Button>
   </View>);
 }

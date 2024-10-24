@@ -17,7 +17,7 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
     "@react-navigation/native": "^6.0.2",
-    "@shopify/react-native-skia": "^1.5.0",
+    "@shopify/react-native-skia": "1.2.3",
     "axios": "^1.7.7",
     "expo": "~51.0.28",
     "expo-camera": "~15.0.16",
@@ -26,7 +26,6 @@
     "expo-font": "~12.0.9",
     "expo-gl": "~14.0.2",
     "expo-linking": "~6.3.1",
-    "expo-permissions": "^14.4.0",
     "expo-router": "~3.5.23",
     "expo-speech": "~12.0.2",
     "expo-splash-screen": "~0.27.5",
@@ -45,7 +44,8 @@
     "react-native-vision-camera": "^4.5.3",
     "react-native-web": "~0.19.10",
     "react-native-worklets-core": "^1.3.3",
-    "vision-camera-resize-plugin": "^3.1.0"
+    "vision-camera-resize-plugin": "^3.1.0",
+    "expo-asset": "~10.0.10"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

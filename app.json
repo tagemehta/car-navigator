@@ -47,7 +47,8 @@
         {
           "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera"
         }
-      ]
+      ],
+      "expo-asset"
     ],
     "experiments": {
       "typedRoutes": true
@@ -57,7 +58,8 @@
         "projectId": "734fea26-08e3-4718-ba0f-bf0e9097ccdb"
       }
     },
-    "assetBundlePatterns": ["**/*"]
-
+    "assetBundlePatterns": [
+      "**/*"
+    ]
   }
 }
