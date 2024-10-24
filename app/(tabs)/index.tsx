@@ -21,7 +21,6 @@ export default function Index() {
       <Text>Please provide the car's make, model and year, separated by a comma</Text>
       <TextInput style={styles.input} value={carInfo} onChangeText={setCarInfo} />
       <Button title="Submit" onPress={() => processCarInfo(carInfo, router)} />
-        <Button title="Go to Camera" onPress={() => router.push('/camera')} />
     </View>
   );
 }
