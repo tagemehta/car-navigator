@@ -47,15 +47,16 @@ export default function App() {
           router.push({pathname: '/navigator', params: { make, model, color} });
         }
         else if (res == 'no_car') {
-          setOutputText('No car found')
+          setOutputText('No car found, retaking picture!')
+          takePic();
         }
         else if (res == 'incorrect') {
-          setOutputText('Incorrect car found!')
+          setOutputText('Incorrect car found, retaking picture!')
+          takePic();
         }
         if (outputText != "") {
           Speech.speak(outputText);
         }
-        console.log(outputText)
       }
       else {
         setOutputText('Looking for car!')
