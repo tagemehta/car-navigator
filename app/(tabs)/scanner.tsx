@@ -3,11 +3,14 @@
 // Figure out how to take pictures. Call identifyCar with the image
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
 import { useState, useRef} from 'react';
-import { Button, StyleSheet, Text, Touchable, TouchableOpacity, View } from 'react-native';
+import { Button, StyleSheet, Text, Touchable, View,  TouchableOpacity} from 'react-native';
 import { useLocalSearchParams, useRouter } from "expo-router";
 import identifyCarFromImg from "@/utilities/identifyCar";
 import navigateToCar from '@/utilities/navigator';
 import * as Speech from 'expo-speech';
+import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+  import { Vibration } from 'react-native';
 
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
@@ -15,7 +18,7 @@ export default function App() {
   const [camReady, setCamReady] = useState(false);
   const [outputText, setOutputText] = useState('');
   const obj = useLocalSearchParams<Props>();
-  const {make, model, color} = obj
+  const {make, model, color} = obj;
   const camRef = useRef<CameraView>(null);
   const router = useRouter();
 
@@ -37,7 +40,7 @@ export default function App() {
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
-
+  
   const takePic = async () => {
     if (camReady && camRef.current) {
       let result = await camRef.current.takePictureAsync({base64: true});
@@ -74,51 +77,74 @@ export default function App() {
         else if (res == 'no_car') {
           setOutputText('No car found, retaking picture!')
           takePic();
-        }
-        else if (res == 'incorrect') {
-          setOutputText('Incorrect car found, retaking picture!')
+        } else if (res == 'incorrect') {
+          setOutputText('Incorrect car found, retaking picture!');
           takePic();
         }
         if (outputText != "") {
           Speech.speak(outputText);
         }
-      }
-      else {
-        setOutputText('Looking for car!')
+      } else {
+        setOutputText('Looking for car!');
       }
     }
   }
 
 
+  const handleSwipeOpen = (direction: "left" | "right", swipeable: Swipeable) => {
+    Vibration.vibrate(100); // Vibrate for 100 milliseconds upon swiping
+    if (direction === "right") {
+      console.log('Swiped left');
+      swipeable.close();
+      // Add your logic for handling the swipe left gesture here
+      router.push('/'); // Example: Navigate to home screen
+    } else if (direction === "left") {
+      console.log('Swiped right');
+      // Add your logic for handling the swipe right gesture here
+    }
+  };
+
 
   return (
-    <View style={styles.container}>
-      <CameraView ref={camRef} style={styles.camera} facing={facing} onCameraReady={() => setCamReady(true)} >
-        <View style={styles.outputContainer}>
-          <Text style={styles.outputText}>{outputText}</Text>
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-            <Text style={styles.text}>Flip Camera</Text>
-          </TouchableOpacity>
-          {camReady && <TouchableOpacity onPress={takePic} style={styles.button}><Text style={styles.text}>Take Picture</Text></TouchableOpacity>}
-        </View>
-      </CameraView>
-    </View>
+    <GestureHandlerRootView>
+      <Swipeable
+        
+        renderRightActions={() => <View style={{ flex: 1, backgroundColor: 'blue' }} />}
+        onSwipeableOpen={handleSwipeOpen}
+      >
+        <CameraView ref={camRef} style={styles.camera} facing={facing} onCameraReady={() => setCamReady(true)}>
+          <View style={styles.outputContainer}>
+            <Text style={styles.outputText}>{outputText}</Text>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
+              <Text style={styles.text}>Flip Camera</Text>
+            </TouchableOpacity>
+            {camReady && (
+              <TouchableOpacity onPress={takePic} style={styles.button}>
+                <Text style={styles.text}>Take Picture</Text>
+              </TouchableOpacity>
+            )}
+          </View>
+        </CameraView>
+      </Swipeable>
+    </GestureHandlerRootView>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
+   
   },
   message: {
     textAlign: 'center',
     paddingBottom: 10,
   },
   camera: {
-    flex: 1,
+    
+    height: "100%",
+    width: "100%"
   },
   buttonContainer: {
     flex: 1,
@@ -151,6 +177,7 @@ const styles = StyleSheet.create({
   outputContainer: {
     alignItems: 'center',
     marginTop: 200,
+  
   }
 });
 
