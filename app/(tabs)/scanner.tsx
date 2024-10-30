@@ -6,6 +6,7 @@ import { useState, useRef} from 'react';
 import { Button, StyleSheet, Text, Touchable, View,  TouchableOpacity} from 'react-native';
 import { useLocalSearchParams, useRouter } from "expo-router";
 import identifyCarFromImg from "@/utilities/identifyCar";
+import navigateToCar from '@/utilities/navigator';
 import * as Speech from 'expo-speech';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
@@ -46,10 +47,35 @@ export default function App() {
       if (result?.base64) {
         let res = await identifyCarFromImg(result.base64, obj);
         if (res == 'correct') {
-          setOutputText('Car found!');
-          router.push({pathname: '/navigator', params: { make, model, color} });
-        } else if (res == 'no_car') {
-          setOutputText('No car found, retaking picture!');
+          setOutputText('Car found!')
+          let car_in_frame = true;
+          let past_car_loc = "unknown"
+          while(car_in_frame) {
+            let car_pic = await camRef.current.takePictureAsync({base64: true});
+            if (car_pic?.base64) {
+              let car_loc = await navigateToCar(car_pic.base64, obj)
+              if (car_loc == "Left") {
+                setOutputText('Car is on the left. Slowly turn left!')
+                past_car_loc = "left"
+              } else if (car_loc == "Right") {
+                setOutputText('Car is on the right. Slowly turn right!')
+                past_car_loc = "right"
+              } else if (car_loc == "Center") {
+                setOutputText('Car is centered. Move forward!')
+                past_car_loc = "center"
+              } else if (car_loc == "no_car") {
+                setOutputText(`Car is no longer in the frame. It was last seen on the ${past_car_loc} of the camera frame. Rotate your camera to locate the car again.`)
+                car_in_frame = false
+              }
+              if (outputText != "") {
+                Speech.speak(outputText);
+              }
+            }
+          }
+          takePic();
+        }
+        else if (res == 'no_car') {
+          setOutputText('No car found, retaking picture!')
           takePic();
         } else if (res == 'incorrect') {
           setOutputText('Incorrect car found, retaking picture!');
