@@ -9,6 +9,8 @@ import identifyCarFromImg from "@/utilities/identifyCar";
 import * as Speech from 'expo-speech';
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
+  import { Vibration } from 'react-native';
+
 export default function App() {
   const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
@@ -37,7 +39,7 @@ export default function App() {
   function toggleCameraFacing() {
     setFacing(current => (current === 'back' ? 'front' : 'back'));
   }
-
+  
   const takePic = async () => {
     if (camReady && camRef.current) {
       let result = await camRef.current.takePictureAsync({base64: true});
@@ -62,9 +64,12 @@ export default function App() {
     }
   }
 
+
   const handleSwipeOpen = (direction: "left" | "right", swipeable: Swipeable) => {
+    Vibration.vibrate(100); // Vibrate for 100 milliseconds upon swiping
     if (direction === "right") {
       console.log('Swiped left');
+      swipeable.close();
       // Add your logic for handling the swipe left gesture here
       router.push('/'); // Example: Navigate to home screen
     } else if (direction === "left") {
@@ -73,9 +78,11 @@ export default function App() {
     }
   };
 
+
   return (
     <GestureHandlerRootView>
       <Swipeable
+        
         renderRightActions={() => <View style={{ flex: 1, backgroundColor: 'blue' }} />}
         onSwipeableOpen={handleSwipeOpen}
       >
