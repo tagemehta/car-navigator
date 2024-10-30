@@ -6,11 +6,23 @@ import { Text, View, TextInput, StyleSheet, Button } from "react-native";
 import { useRouter } from 'expo-router';
 import { useState } from "react";
 import parseCarInfo from "@/utilities/parseCarInfo";
+import { GestureHandlerRootView, TapGestureHandler } from "react-native-gesture-handler";
+import * as Clipboard from 'expo-clipboard';
+
 
 export default function Index() {
   const router = useRouter();
   const [carInfo, setCarInfo] = useState('');
+  const handleDoubleTap = async () => {
+    const clipboardContent = await Clipboard.getStringAsync();
+    processCarInfo(clipboardContent, router);
+  };
   return (
+    <GestureHandlerRootView>
+      <TapGestureHandler
+        numberOfTaps={2}
+        onActivated={handleDoubleTap}
+      >
     <View
       style={{
         flex: 2,
@@ -22,6 +34,8 @@ export default function Index() {
       <TextInput style={styles.input} value={carInfo} onChangeText={setCarInfo} />
       <Button title="Submit" onPress={() => processCarInfo(carInfo, router)} />
     </View>
+    </TapGestureHandler>
+    </GestureHandlerRootView>
   );
 }
 
