@@ -79,6 +79,7 @@ export default function App(): React.ReactNode {
         },
         pixelFormat: 'rgb',
         dataType: 'float32',
+        rotation: '90deg'
       });
 
       const out = actualModel.runSync([resized]);
@@ -87,68 +88,66 @@ export default function App(): React.ReactNode {
       const numValuesPerCell = 84;
       const confidenceThreshold = .9;  // Set your desired threshold
       let outputs = out[0]
-      // Parse the output
+      console.log(outputs.slice(0,84))
       let boundingBoxes = [];
     let bestGuess = 0;
     let bestGuessObj = undefined
-    
+  
+    console.log(outputs.slice(0,10))
     for (let i = 0; i < gridCells; i++) {
         let offset = i * numValuesPerCell;
         let box = outputs.slice(offset, offset + 4);  // [x_center, y_center, width, height]
     
-        // Apply sigmoid to confidence and class probabilities
-        let confidence = (outputs[offset + 4]);  // Object confidence
-        let classProbabilities = outputs.slice(offset + 5, offset + numValuesPerCell) // Class scores
-          let classProbabilitiesNumbers = Array.prototype.slice.call(classProbabilities);
-    
-        if (confidence > confidenceThreshold) {
+        // let confidence = (outputs[offset + 4]);  // Object confidence
+        let classProbabilities = outputs.slice(offset + 4, offset + numValuesPerCell) // Class scores
+        let classProbabilitiesNumbers = Array.prototype.slice.call(classProbabilities);
             let maxClassIndex = classProbabilitiesNumbers.indexOf(Math.max(...classProbabilitiesNumbers));
 
             let maxClassScore = classProbabilities[maxClassIndex];
-            if ('banana' == classLabels[maxClassIndex]) {
-              console.log('banana')
-              
-              const x_center = Number(box["0"]);
-              const y_center = Number(box["1"]);
-              const width = Number(box["2"]);
-              const height = Number(box["3"]);
-            
-              const x_center_scaled = x_center * frame.width;
-              const y_center_scaled = y_center * frame.height;
-              const width_scaled = width * frame.width;
-              const height_scaled = height * frame.height;
-            
-              const x_min = x_center_scaled - width_scaled / 2;
-              const y_min = y_center_scaled - height_scaled / 2;
-              const rect = Skia.XYWHRect(x_min, y_min, width_scaled, height_scaled);
-              const paint = Skia.Paint();
-              paint.setColor(Skia.Color('red'));
-              frame.drawRect(
-                rect, paint
+  
+            if (maxClassScore > confidenceThreshold) {
+              if ('banana' == classLabels[maxClassIndex]) {
+                console.log('banana')
                 
-              );
+                const x_center = Number(box["0"]);
+                const y_center = Number(box["1"]);
+                const width = Number(box["2"]);
+                const height = Number(box["3"]);
+              
+                const x_center_scaled = x_center * frame.width;
+                const y_center_scaled = y_center * frame.height;
+                const width_scaled = width * frame.width;
+                const height_scaled = height * frame.height;
+              
+                const x_min = x_center_scaled - width_scaled / 2;
+                const y_min = y_center_scaled - height_scaled / 2;
+                const rect = Skia.XYWHRect(x_min, y_min, width_scaled, height_scaled);
+                const paint = Skia.Paint();
+                paint.setColor(Skia.Color('red'));
+                frame.drawRect(
+                  rect, paint
+                  
+                );
+              }
+              boundingBoxes.push({
+                  box: box,
+                  classIndex: maxClassIndex,
+                  classScore: maxClassScore,
+                  classLabel: classLabels[maxClassIndex]
+              });
             }
-            boundingBoxes.push({
-                box: box,
-                confidence: confidence,
-                classIndex: maxClassIndex,
-                classScore: maxClassScore,
-                classLabel: classLabels[maxClassIndex]
-            });
-            if (confidence > bestGuess) {
-              bestGuess = Number(confidence);
+            if (maxClassScore > bestGuess) {
+              bestGuess = Number(maxClassScore);
               bestGuessObj = {
                 box: box,
-                confidence: confidence,
                 classIndex: maxClassIndex,
                 classScore: maxClassScore,
                 classLabel: classLabels[maxClassIndex]
             }
             }
 
-        }
+        
     }
-    console.log(boundingBoxes.map((x) => x.classLabel))
       
       // Output high-confidence bounding boxes
       // console.log(boundingBoxes);
