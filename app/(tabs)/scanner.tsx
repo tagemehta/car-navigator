@@ -2,7 +2,7 @@
 // TEAM 2 - Get access to the user's camera
 // Figure out how to take pictures. Call identifyCar with the image
 import { CameraView, CameraType, useCameraPermissions } from 'expo-camera';
-import { useState, useRef} from 'react';
+import { useState, useRef, useEffect} from 'react';
 import { Button, StyleSheet, Text, Touchable, View,  TouchableOpacity} from 'react-native';
 import { useLocalSearchParams, useRouter } from "expo-router";
 import identifyCarFromImg from "@/utilities/identifyCar";
@@ -21,6 +21,10 @@ export default function App() {
   const {make, model, color} = obj;
   const camRef = useRef<CameraView>(null);
   const router = useRouter();
+
+  useEffect(() => {
+    Speech.speak(outputText);
+  }, [outputText])
 
   if (!permission) {
     // Camera permissions are still loading.
@@ -67,9 +71,6 @@ export default function App() {
                 setOutputText(`Car is no longer in the frame. It was last seen on the ${past_car_loc} of the camera frame. Rotate your camera to locate the car again.`)
                 car_in_frame = false
               }
-              if (outputText != "") {
-                Speech.speak(outputText);
-              }
             }
           }
           takePic();
@@ -80,9 +81,6 @@ export default function App() {
         } else if (res == 'incorrect') {
           setOutputText('Incorrect car found, retaking picture!');
           takePic();
-        }
-        if (outputText != "") {
-          Speech.speak(outputText);
         }
       } else {
         setOutputText('Looking for car!');
@@ -103,6 +101,8 @@ export default function App() {
       // Add your logic for handling the swipe right gesture here
     }
   };
+
+
 
 
   return (
