@@ -92,7 +92,6 @@ export default function App(): React.ReactNode {
       let bestGuess = 0;
       let bestGuessObj = undefined
   
-    console.log(outputs.slice(0,10))
     for (let i = 0; i < gridCells; i++) {
         let offset = i * numValuesPerCell;
         let box = outputs.slice(offset, offset + 4);  // [x_center, y_center, width, height]
@@ -127,7 +126,7 @@ export default function App(): React.ReactNode {
     }
       
       // Output high-confidence bounding boxes
-    console.log(bestGuessObj);
+    console.log(bestGuessObj?.classLabel);
     if (bestGuessObj?.box) {
       const box = bestGuessObj.box;
       const x_center = Number(box["0"]);
