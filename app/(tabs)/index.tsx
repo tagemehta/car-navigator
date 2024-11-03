@@ -45,7 +45,7 @@ export default function App(): React.ReactNode {
   const { hasPermission, requestPermission } = useCameraPermission()
   const device = useCameraDevice('back')
   // from https://www.kaggle.com/models/tensorflow/efficientdet/frameworks/tfLite
-  const model = useTensorflowModel(require('@/assets/models/yolo11n_float32.tflite'))
+  const model = useTensorflowModel(require('@/assets/models/yolo11n_float32_big.tflite'))
   const actualModel = model.state === 'loaded' ? model.model : undefined
   const predictions = useSharedValue<modelOutputs[]>([])
   const [detectedObj, setDetectedObj] = React.useState<string>('')
@@ -72,10 +72,11 @@ export default function App(): React.ReactNode {
       }
   
       console.log(`Running inference on ${frame}`);
+      console.log
       const resized = resize(frame, {
         scale: {
-          width: 320,
-          height: 320,
+          width: 1088,
+          height: 1920,
         },
         pixelFormat: 'rgb',
         dataType: 'float32',
@@ -104,7 +105,7 @@ export default function App(): React.ReactNode {
         let maxClassScore = classProbabilities[maxClassIndex];
   
         if (maxClassScore > confidenceThreshold) {
- 
+          if (maxClassScore > 1) console.log(maxClassScore)
           boundingBoxes.push({
               box: box,
               classIndex: maxClassIndex,
