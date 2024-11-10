@@ -17,22 +17,7 @@ export default function TabLayout() {
         options={{
           title: 'Scanner',
           tabBarIcon: ({ color }) => <FontAwesome size={28} name="search" color={color} />,
-          href: {
-            pathname: '/scanner',
-            params: { make: 'Toyota', model: 'Highlander', color: 'red' }
-          }
-        }}
-        
-      />
-            <Tabs.Screen
-        name="navigator"
-        options={{
-          title: 'Navigator',
-          tabBarIcon: ({ color }) => <FontAwesome size={28} name="location-arrow" color={color} />,
-          href: {
-            pathname: '/navigator',
-            params: { make: 'Toyota', model: 'Highlander', color: 'red' }
-          }
+          href: null
         }}
         
       />

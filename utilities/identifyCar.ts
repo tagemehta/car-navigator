@@ -16,7 +16,7 @@ export default async function identifyCarFromImg(data: string, obj: any):Promise
             content: [
             {
               "type": "text",
-              "text": "Tell me the make, color, and model of the car in this image and return the data in the format of color make model.",
+              "text": "Help me identify if I am looking at the right car. I am looking for the following description: " + obj.description,
             },
             {
               "type": "image_url",
@@ -34,7 +34,7 @@ export default async function identifyCarFromImg(data: string, obj: any):Promise
               "type": "object",
               "properties": {
                 "result": {
-                  "description": `Return correct if the car is ${obj.make} ${obj.model} and ${obj.color}, return incorrect if the car is not ${obj.make} ${obj.model} and ${obj.color}, return no_car if there is no car in the image. Do not return undefined`,
+                  "description": `Return correct if you receive an image of a car that fits the following description: ${obj.description}; return incorrect if the car does not fit the description, return no_car if there is no car in the image. Do not return undefined`,
                   "enum": ["correct", "incorrect", "no_car"]
                 }
               }
@@ -51,7 +51,7 @@ export default async function identifyCarFromImg(data: string, obj: any):Promise
           'Content-Type': 'application/json',
       }
     });
-    // Get the text returned by GPT and split it by spaces to get the color, make, and model
+    // Get the text returned by GPT
     return JSON.parse(response.data.choices[0].message['content'])['result'] || 'error'
   } catch (e: AxiosError | any) {
     return 'error'

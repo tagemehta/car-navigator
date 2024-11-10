@@ -18,9 +18,14 @@ export default function App() {
   const [camReady, setCamReady] = useState(false);
   const [outputText, setOutputText] = useState('');
   const obj = useLocalSearchParams<Props>();
-  const {make, model, color} = obj;
+  const {description} = obj;
   const camRef = useRef<CameraView>(null);
   const router = useRouter();
+
+  const speakText = (text: string) => {
+    setOutputText('')
+    setOutputText(text)
+  }
 
   useEffect(() => {
     Speech.speak(outputText);
@@ -46,12 +51,14 @@ export default function App() {
   }
   
   const takePic = async () => {
-    if (camReady && camRef.current) {
+    if (camRef.current) {
       let result = await camRef.current.takePictureAsync({base64: true});
       if (result?.base64) {
+        
         let res = await identifyCarFromImg(result.base64, obj);
+        console.log(res)
         if (res == 'correct') {
-          setOutputText('Car found!')
+          speakText('Car found! Preparing to navigate:')
           let car_in_frame = true;
           let past_car_loc = "unknown"
           while(car_in_frame) {
@@ -59,31 +66,31 @@ export default function App() {
             if (car_pic?.base64) {
               let car_loc = await navigateToCar(car_pic.base64, obj)
               if (car_loc == "Left") {
-                setOutputText('Car is on the left. Slowly turn left!')
+                speakText('Car is on the left. Slowly turn left!')
                 past_car_loc = "left"
               } else if (car_loc == "Right") {
-                setOutputText('Car is on the right. Slowly turn right!')
+                speakText('Car is on the right. Slowly turn right!')
                 past_car_loc = "right"
               } else if (car_loc == "Center") {
-                setOutputText('Car is centered. Move forward!')
+                speakText('Car is centered. Move forward!')
                 past_car_loc = "center"
               } else if (car_loc == "no_car") {
-                setOutputText(`Car is no longer in the frame. It was last seen on the ${past_car_loc} of the camera frame. Rotate your camera to locate the car again.`)
+                speakText(`Car is no longer in the frame. It was last seen on the ${past_car_loc} of the camera frame. Rotate your camera to locate the car again.`)
                 car_in_frame = false
               }
             }
           }
-          takePic();
+          await takePic();
         }
         else if (res == 'no_car') {
-          setOutputText('No car found, retaking picture!')
-          takePic();
+          speakText('No car found, retaking picture!')
+          await takePic();
         } else if (res == 'incorrect') {
-          setOutputText('Incorrect car found, retaking picture!');
-          takePic();
+          speakText('Incorrect car found, retaking picture!');
+          await takePic();
         }
       } else {
-        setOutputText('Looking for car!');
+        speakText('Looking for car!');
       }
     }
   }
@@ -112,7 +119,10 @@ export default function App() {
         renderRightActions={() => <View style={{ flex: 1, backgroundColor: 'blue' }} />}
         onSwipeableOpen={handleSwipeOpen}
       >
-        <CameraView ref={camRef} style={styles.camera} facing={facing} onCameraReady={() => setCamReady(true)}>
+        <CameraView ref={camRef} style={styles.camera} facing={facing} onCameraReady={() => {
+          setCamReady(true);
+          takePic();
+          }}>
           <View style={styles.outputContainer}>
             <Text style={styles.outputText}>{outputText}</Text>
           </View>
@@ -185,9 +195,7 @@ const styles = StyleSheet.create({
 
 
 type Props = {
-    model: string;
-    make: string;
-    color: string;
+    description: string
 }
 
 // export default function Scanner() {

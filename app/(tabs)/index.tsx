@@ -30,7 +30,7 @@ export default function Index() {
         alignItems: "center",
       }}
     >
-      <Text>Please provide the car's make, model and year, separated by a comma</Text>
+      <Text>Please provide a description of the car: </Text>
       <TextInput style={styles.input} value={carInfo} onChangeText={setCarInfo} />
       <Button title="Submit" onPress={() => processCarInfo(carInfo, router)} />
     </View>
@@ -44,12 +44,12 @@ const processCarInfo = (carInfo: string, router: any) => {
   // For example, you can make an API call to get the car details
   // and then navigate to the next screen with the car details
   // using the router.push method
-  const parsed_text=carInfo.split(' ');
-  let color = parsed_text[0];
-  let model = parsed_text[1];
-  let make = parsed_text[2]
-  let licensePlate = ""
-  router.push({pathname: '/scanner', params: { make, model, color} });
+  // const parsed_text=carInfo.split(' ');
+  // let color = parsed_text[0];
+  // let model = parsed_text[1];
+  // let make = parsed_text[2]
+  // let licensePlate = ""
+  router.push({pathname: '/scanner', params: { description: carInfo} });
 };
 const styles = StyleSheet.create({
   input: {
