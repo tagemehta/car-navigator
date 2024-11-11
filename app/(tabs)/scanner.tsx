@@ -13,12 +13,10 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
   import { Vibration } from 'react-native';
 
 export default function App() {
-  const [facing, setFacing] = useState<CameraType>('back');
   const [permission, requestPermission] = useCameraPermissions();
   const [camReady, setCamReady] = useState(false);
   const [outputText, setOutputText] = useState('');
   const obj = useLocalSearchParams<Props>();
-  const {description} = obj;
   const camRef = useRef<CameraView>(null);
   const router = useRouter();
 
@@ -45,10 +43,6 @@ export default function App() {
       </View>
     );
   }
-
-  function toggleCameraFacing() {
-    setFacing(current => (current === 'back' ? 'front' : 'back'));
-  }
   
   const takePic = async () => {
     if (camRef.current) {
@@ -58,7 +52,7 @@ export default function App() {
         let res = await identifyCarFromImg(result.base64, obj);
         console.log(res)
         if (res == 'correct') {
-          speakText('Car found! Preparing to navigate:')
+          speakText('Car found! Preparing to navigate')
           let car_in_frame = true;
           let past_car_loc = "unknown"
           while(car_in_frame) {
@@ -119,7 +113,7 @@ export default function App() {
         renderRightActions={() => <View style={{ flex: 1, backgroundColor: 'blue' }} />}
         onSwipeableOpen={handleSwipeOpen}
       >
-        <CameraView ref={camRef} style={styles.camera} facing={facing} onCameraReady={() => {
+        <CameraView ref={camRef} style={styles.camera} facing={'back'} onCameraReady={() => {
           setCamReady(true);
           takePic();
           }}>
@@ -127,9 +121,6 @@ export default function App() {
             <Text style={styles.outputText}>{outputText}</Text>
           </View>
           <View style={styles.buttonContainer}>
-            <TouchableOpacity style={styles.button} onPress={toggleCameraFacing}>
-              <Text style={styles.text}>Flip Camera</Text>
-            </TouchableOpacity>
             {camReady && (
               <TouchableOpacity onPress={takePic} style={styles.button}>
                 <Text style={styles.text}>Take Picture</Text>
